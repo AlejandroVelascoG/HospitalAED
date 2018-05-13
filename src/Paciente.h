@@ -5,12 +5,9 @@
  *      Author: vonnewmann
  */
 
-
-
 #ifndef SRC_PACIENTE_H_
 #define SRC_PACIENTE_H_
 
-// template <typename int>
 
 class Paciente {
 private:
@@ -20,8 +17,9 @@ private:
 	int Edad;
 	int Triage;
 	int TiempoDeVida;
+	int Rango;
 
-
+	int setRango();
 
 public:
 
@@ -41,6 +39,13 @@ public:
 	int getTiempoDeVida();
 
 	void setTiempoDeVida(int tv);
+
+	int getRango();
+
+	bool operator<(Paciente &paciente);
+
+	bool operator>(Paciente &paciente);
+
 
 };
 
