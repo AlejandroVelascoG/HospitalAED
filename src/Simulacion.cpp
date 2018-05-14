@@ -68,8 +68,9 @@ int main(){
 	}
 	imprimir(arbol);
 	cout << "---" << endl;
-	arbol.eliminarMin();
+	cout << arbol[1].getTriage() << arbol[1].getRango() << endl;
 	cout << "---" << endl;
+	arbol.eliminarMin();
 	imprimir(arbol);
 
 }
@@ -87,7 +88,7 @@ void crearPacientes(vector<Paciente> &sala, int n){
 }
 
 void imprimir(Heap<Paciente> heap){
-	for(int i = 0; i<heap.getCuenta(); i++){
+	for(int i = 1; i<heap.getCuenta()+1; i++){
 		cout << heap[i].getTriage() << heap[i].getRango() << endl;
 	}
 }

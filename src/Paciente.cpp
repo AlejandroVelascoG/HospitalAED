@@ -74,7 +74,7 @@ return Rango;
 }
 
 bool Paciente::operator<(Paciente &paciente){
-	if(this->getTriage() * 10 + this->getRango() <  paciente.getTriage() * 10 + paciente.getRango()){
+	if(getTriage() * 10 + getRango() <  paciente.getTriage() * 10 + paciente.getRango()){
 		return true;
 	}else {
 		return false;
@@ -82,7 +82,7 @@ bool Paciente::operator<(Paciente &paciente){
 }
 
 bool Paciente::operator >(Paciente &paciente){
-	if(this->getTriage() * 10 + this->getRango() >  paciente.getTriage() * 10 + paciente.getRango()){
+	if(getTriage() * 10 + getRango() >  paciente.getTriage() * 10 + paciente.getRango()){
 			return true;
 		}else {
 			return false;
