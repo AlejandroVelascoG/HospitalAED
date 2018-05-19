@@ -59,11 +59,12 @@ int Paciente::getTiempoDeVida(){
 void Paciente::setTiempoDeVida(int tv){
 	TiempoDeVida = tv;
 }
+*/
 
 int Paciente::getRango(){
 	return Rango;
 }
-*/
+
 
 int Paciente::setRango(){
 if (Edad <18) Rango = 1;
