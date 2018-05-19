@@ -25,7 +25,7 @@ public:
 
 	DataType eliminarMin();
 
-	void percolate_up(DataType dato, int pos);
+	void percolate_up(int pos);
 
 	void percolate_down(int pos);
 

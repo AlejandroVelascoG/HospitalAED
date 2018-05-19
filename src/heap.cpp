@@ -16,7 +16,6 @@ Heap<DataType>::Heap(){
 	cuenta = 0;
 	arreglo = new DataType[INI_CAP];
 	size = INI_CAP;
-
 }
 
 template <typename DataType>
@@ -36,38 +35,47 @@ int Heap<DataType>::getCuenta(){
 	return cuenta;
 }
 
-
 template <typename DataType>
 void Heap<DataType>::insertar(DataType dato){
-	if(cuenta+1 == size){
-			resize();
-		}
-		arreglo [cuenta + 1] = dato;
-		int posicion = cuenta +1;
-		while (dato < arreglo[posicion /2]){
-			if(posicion == 1 && dato < arreglo[posicion]){
-				DataType temp = arreglo[posicion];
-				arreglo[posicion] = dato;
-				arreglo[posicion+1] = temp;
-			}
-			percolate_up ( dato, posicion);
+	if(cuenta == size){
+		resize();
+	}
+	int posicion = cuenta +1;
+	arreglo [posicion] = dato;
+	while (dato < arreglo[posicion /2])
+		if(posicion == 1 && dato < arreglo[posicion]){
+			DataType temp = arreglo[posicion];
+			arreglo[posicion] = dato;
+			arreglo[posicion+1] = temp;
+		}else{
+			percolate_up (posicion);
 			posicion = posicion/2;
 		}
-		cuenta++;
+	cuenta++;
 }
 
 template <typename DataType>
 DataType Heap<DataType>::eliminarMin(){
 	DataType espacio = arreglo[1];
-	DataType temp = arreglo[cuenta + 1];
-	int pos = 1;
-	while (temp > arreglo [2* pos] && temp> arreglo [2 * pos +1]){
-		percolate_down (pos);
-		arreglo[2 * pos]< arreglo [2 * pos + 1] ? pos = 2 * pos : pos = 2 * pos +1;
+	if(cuenta == 1){
+		--cuenta;
+		return espacio;
+	}else{
+		DataType temp = arreglo[cuenta];
+		int pos = 1;
+		while(temp > arreglo [2* pos] && temp > arreglo [2 * pos +1]){
+			if(pos==cuenta-1 || pos == cuenta){
+				arreglo[pos] = temp;
+			}else{
+			percolate_down (pos);
+			arreglo[2 * pos]< arreglo [2 * pos + 1] ?
+					pos = 2 * pos : pos = 2 * pos +1;
+			}
+		}
+		arreglo [pos] = temp;
+		--cuenta;
+		return espacio;
 	}
-	arreglo [pos] = temp;
-	cuenta --;
-	return espacio;
 }
 
 template <typename DataType>
@@ -82,16 +90,18 @@ void Heap<DataType>::resize(){
 }
 
 template <typename DataType>
-void Heap<DataType>::percolate_up(DataType dato, int pos){
+void Heap<DataType>::percolate_up(int pos){
 	DataType temp = arreglo[pos/2];
-	arreglo[pos/2] = dato;
-	arreglo[pos]= temp;
-
+	if(arreglo[pos] < arreglo[pos/2]){
+		arreglo[pos/2] = arreglo[pos];
+		arreglo[pos] = temp;
+	}
 }
 
 template <typename DataType>
 void Heap<DataType>::percolate_down(int pos){
-	arreglo[2*pos] < arreglo[2*pos+1] ? arreglo [pos] : arreglo [2 *pos +1];
+	arreglo[2*pos] < arreglo[2*pos+1] ?
+			arreglo [pos] = arreglo[2*pos] : arreglo[pos] = arreglo [2 *pos +1];
 }
 
 template <typename DataType>
