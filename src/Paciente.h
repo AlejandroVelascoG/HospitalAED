@@ -16,7 +16,7 @@ private:
 	int Documento;
 	int Edad;
 	int Triage;
-	int TiempoDeVida;
+	// int TiempoDeVida;
 	int Rango;
 
 	int setRango();

@@ -8,87 +8,95 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include <queue>
 #include <stdlib.h>
 #include <time.h>
 #include "Paciente.h"
 #include "heap.h"
+
 using namespace std;
+
 //Constantes
-const int DOCTORES= 10;
-const int CAMILLAS = 30;
-const int ENFERMERAS=20;
-const int ESPECIALISTAS= 5;
+
+const int PACIENTES_INI = 50;
+vector<Paciente> EMERGENCIAS (15);
+vector<Paciente> OBSERVACION (30);
+vector<Paciente> QUIROFANOS (5);
+vector<Paciente> CONSULTORIOS;
+Heap<Paciente> sala;
+queue<Paciente> COLA_CONS;
 const int MAX_CAP_SALA = 100;
 
 //Tiempos
+
 const int TIEMPOTEMPORAL = 0;
 int Tespera;
 const int TRECUPERACION = 30;
 
-// vector que representa la sala
-	vector<Paciente> sala;
+void clasificar(Paciente p1);
 
 // función de imprimir el árbol
 
 void imprimir(Heap<Paciente> heap);
 
-//nueva funcion para crear pacientes
+// funcion para crear pacientes
 
-void crearPacientes(vector<Paciente> &sala, int n);
+void crearPacientes(Heap<Paciente> &sala);
 
-// cantidad de pacientes
-int cantPacientes();
-//ya funciona del todo el aleatorio
+void nuevoPaciente();
+
 int main(){
-
-	// INICIO DE LA SIMULACION
-	//while(TIEMPOTEMPORAL < 100){
 	srand(time(NULL));
-//cada vez que TIEMPOTEMPORAL sea un multiplo de 3 se crearan pacientes de 1 a 10 pacientes arbitrarios
-	/* if (TIEMPOTEMPORAL% 3==0) {
-		int n = cantPacientes;
-		crearPacientes(sala, n);
-	}
-	if(sala.empty()!= false){
-	}
+	crearPacientes(sala);
 
-	}*/
+	// CLASIFICA PRIMEROS 25 PACIENTES Y DEJA LA SALA CON 25 ESPERANDO
 
-	vector<Paciente> s1;
-
-	crearPacientes(s1, 4);
-
-	/* for(int i = 0; i<s1.size(); i++){
-		cout << s1[i].getEdad() << "\t" << s1[i].getRango()<< "\t" <<  s1[i].getTriage() << endl;
+	for(int i = 0; PACIENTES_INI /2;i++){
+		Paciente pac = sala.eliminarMin();
+		clasificar(pac);
 	}
-	*/
-	Heap<Paciente> arbol;
-	for(int i = 0; i<s1.size(); i++){
-		arbol.insertar(s1[i]);
-	}
-	imprimir(arbol);
-	cout << "---" << endl;
-	cout << arbol[1].getTriage() << arbol[1].getRango() << endl;
-	cout << "---" << endl;
-	arbol.eliminarMin();
-	imprimir(arbol);
 
 }
 
-// numero aleatorio de pacientes que ingresan en la sala
-int cantPacientes(){
-	int cantPaciente = rand()%(10-0);
-	return cantPaciente;
-}
-void crearPacientes(vector<Paciente> &sala, int n){
-	for (int i = 0; i< n; i++){
+
+
+
+// PACIENTES INICIALES
+
+void crearPacientes(Heap<Paciente> &sala){
+	for (int i = 0; i< PACIENTES_INI; i++){
 		Paciente nuevo;
-		sala.push_back(nuevo);
+		sala.insertar(nuevo);
 	}
 }
+
+void nuevoPaciente(){
+	Paciente px;
+	sala.insertar(px);
+}
+
+void clasificar(Paciente p1){
+	if(p1.getRango() <= 14){
+		EMERGENCIAS.push_back(p1);
+	}else if(p1.getRango() >= 21 && p1.getRango() <= 24){
+		EMERGENCIAS.push_back(p1);
+	}else if(p1.getRango() >= 31 && p1.getRango() <= 34){
+		OBSERVACION.push_back(p1);
+	}else if(p1.getRango() >=  41){
+		if(CONSULTORIOS.size==10){
+			COLA_CONS.push(p1);
+		}else if(CONSULTORIOS.size<10){
+			CONSULTORIOS.push_back(p1);
+		}
+	}
+}
+
+
 
 void imprimir(Heap<Paciente> heap){
 	for(int i = 1; i<heap.getCuenta()+1; i++){
 		cout << heap[i].getTriage() << heap[i].getRango() << endl;
 	}
 }
+
+
