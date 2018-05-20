@@ -52,6 +52,9 @@ vector<Paciente> HOSPITALIZACION;
 queue<Paciente> COLA_HOSP;
 const int CAP_MAX_HOSP = 30;
 
+// DE ALTA
+vector<Paciente> DE_ALTA;
+
 
 //Tiempos
 
@@ -75,7 +78,11 @@ void crearPacientes(Heap<Paciente> &SALA);
 
 void nuevoPaciente();
 
-void f_observacion(vector<Paciente> obs);
+void f_observacion(vector<Paciente> &obs);
+
+void f_emergencias(vector<Paciente> &emer);
+
+void f_quirofano(vector<Paciente> &qui);
 
 int main(){
 	srand(time(NULL));
@@ -135,15 +142,69 @@ void clasificar(Paciente p1){
 	}
 }
 
+// Este metodo decide a traves de una probabilidad si envia al paciente a hospitalizacion(o su cola) o le dan de alta
 
-void f_observacion(vector<Paciente> &obs){
-	for(int i = 0; i<obs.size(); i++){
+void f_observacion(vector<Paciente> &obs){// HAY UN PROBLEMA, TENEMOS QUE PREGUNTAR PRIMERO SI ES POSIBLE ENVIARLO
+	for(int i = 0; i<obs.size(); i++){    // A OBSERVACIONES O A LA COLA DE OBSERVACIONES
 		int interv = 1+rand()% (10);
-		if(interv < 3){
-			HOSPITALIZACION.push_back(obs[i]);
+		if(interv <= 3){
+			if(HOSPITALIZACION.size() == CAP_MAX_HOSP){
+				COLA_HOSP.push(obs[i]);
+			}else if(HOSPITALIZACION.size()<CAP_MAX_HOSP){//creo que con esto se soluciona
+				HOSPITALIZACION.push_back(obs[i]);
+			}
+
+		obs.erase(obs.begin()+i);
+		}else if(3<interv<=6){
+			DE_ALTA.push_back(obs[i]);
 			obs.erase(obs.begin()+i);
+
+		}//propongo agregar un atributo tiempo; para deeterminar cuanto tiempo se demoro un paciente es salir de la sala
+	}
+}
+
+// Este metodo decide a traves de una probabilidad si envia al paciente a observacion(o su cola) o a el quirofano
+//(o su cola)
+void f_energencias(vector<Paciente> &emer){
+	for(int i = 0; i<emer.size(); i++){
+		int interv = 1+rand()% (10);
+		if(interv <= 3){
+			if(QUIROFANOS.size() == CAP_MAX_QUIR )
+				COLA_QUIR.push(emer[i]);
+			else if(QUIROFANOS.size()< CAP_MAX_QUIR )
+				QUIROFANOS.push_back(emer[i]);
+
+		emer.erase(emer.begin()+i);
+		}else if(3<interv<=6){
+			if(OBSERVACION.size() == CAP_MAX_OBSER){
+				COLA_OBSER.push(emer[i]);
+			}else if(OBSERVACION.size()<CAP_MAX_OBSER){//creo que con esto se soluciona
+				OBSERVACION.push_back(emer[i]);
+						}
+
+			emer.erase(emer.begin()+i);
 		}
 	}
+
+}
+
+// Este metodo decide a traves de una probabilidad si envia al paciente a HOSPITALIZACION(o su cola) o es muere
+void f_quirofano(vector<Paciente> &qui){
+	for(int i = 0; i<qui.size(); i++){
+		int interv = 1+rand()% (10);
+		if(interv <= 3){
+			if(HOSPITALIZACION.size() == CAP_MAX_QUIR )
+				COLA_HOSP.push(qui[i]);
+			else if(HOSPITALIZACION.size()< CAP_MAX_QUIR )
+				HOSPITALIZACION.push_back(qui[i]);
+
+		qui.erase(qui.begin()+i);
+		}else if(3<interv<=6){
+			//FALTA COLOCARLE EL FACTOR MUERTE
+		qui.erase(qui.begin()+i);
+		}
+	}
+
 }
 
 
