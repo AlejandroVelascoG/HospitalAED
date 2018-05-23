@@ -155,7 +155,7 @@ void f_observacion(vector<Paciente> &obs){// HAY UN PROBLEMA, TENEMOS QUE PREGUN
 			}
 
 		obs.erase(obs.begin()+i);
-		}else if(3<interv<=6){
+		}else if(3<interv && interv <=6){
 			DE_ALTA.push_back(obs[i]);
 			obs.erase(obs.begin()+i);
 
@@ -165,7 +165,7 @@ void f_observacion(vector<Paciente> &obs){// HAY UN PROBLEMA, TENEMOS QUE PREGUN
 
 // Este metodo decide a traves de una probabilidad si envia al paciente a observacion(o su cola) o a el quirofano
 //(o su cola)
-void f_energencias(vector<Paciente> &emer){
+void f_emnergencias(vector<Paciente> &emer){
 	for(int i = 0; i<emer.size(); i++){
 		int interv = 1+rand()% (10);
 		if(interv <= 3){
@@ -175,7 +175,7 @@ void f_energencias(vector<Paciente> &emer){
 				QUIROFANOS.push_back(emer[i]);
 
 		emer.erase(emer.begin()+i);
-		}else if(3<interv<=6){
+		}else if(3<interv && interv<=6){
 			if(OBSERVACION.size() == CAP_MAX_OBSER){
 				COLA_OBSER.push(emer[i]);
 			}else if(OBSERVACION.size()<CAP_MAX_OBSER){//creo que con esto se soluciona
@@ -199,7 +199,7 @@ void f_quirofano(vector<Paciente> &qui){
 				HOSPITALIZACION.push_back(qui[i]);
 
 		qui.erase(qui.begin()+i);
-		}else if(3<interv<=6){
+		}else if(3<interv && interv<=6){
 			//FALTA COLOCARLE EL FACTOR MUERTE
 		qui.erase(qui.begin()+i);
 		}
