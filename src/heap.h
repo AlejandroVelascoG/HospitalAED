@@ -23,6 +23,8 @@ public:
 
 	int getCuenta();
 
+	bool empty();
+
 	DataType eliminarMin();
 
 	void percolate_up(int pos);

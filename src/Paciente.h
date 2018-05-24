@@ -16,10 +16,9 @@ private:
 	int Documento;
 	int Edad;
 	int Triage;
-	// int TiempoDeVida;
 	int Rango;
-
 	int setRango();
+	int Tiempo[5];
 
 public:
 
@@ -29,16 +28,13 @@ public:
 
 	int getDocumento();
 
-
 	int getEdad();
 
 	int getTriage();
 
 	void setTriage(int tr);
 
-	int getTiempoDeVida();
-
-	void setTiempoDeVida(int tv);
+	int getTiempo(int i);
 
 	int getRango();
 

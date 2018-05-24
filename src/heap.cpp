@@ -36,6 +36,11 @@ int Heap<DataType>::getCuenta(){
 }
 
 template <typename DataType>
+bool Heap<DataType>::empty(){
+	return cuenta == 0;
+}
+
+template <typename DataType>
 void Heap<DataType>::insertar(DataType dato){
 	if(cuenta+1 == size){
 		resize();
@@ -69,10 +74,14 @@ DataType Heap<DataType>::eliminarMin(){
 				break;
 			}else{
 			percolate_down (pos);
-			arreglo[2 * pos]< arreglo [2 * pos + 1] ?
-					pos = 2 * pos : pos = 2 * pos +1;
+			if(arreglo[2 * pos]< arreglo [2 * pos + 1]){
+				if(pos<cuenta/2+1) pos = 2 * pos;
+				}else{
+					if(pos<cuenta/2+1) pos = 2 * pos +1;
+					}
+				}break;
 			}
-		}
+
 		arreglo [pos] = temp;
 		--cuenta;
 		return espacio;
@@ -109,7 +118,5 @@ template <typename DataType>
 DataType Heap<DataType>::operator[](int i){
 	return arreglo[i];
 }
-
-
 
 #endif
