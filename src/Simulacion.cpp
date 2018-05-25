@@ -16,14 +16,6 @@
 
 using namespace std;
 
-
-//  ATENCION  ATENCION   ATENCION   ATENCION
-
-/* Quizas no sea necesario el metodo alaeatorio, podes cambiar los intevalos de los  metodos f_emergencias.....
- * y bajar la probabilidad de los numeros para controlarlos. Ej: si el numero generado en quirofano es 0<=2 mate el paciente
- */
-
-
 // CONSTANTE TIEMPO
 
 const int TIEMPO = 120;
@@ -102,9 +94,6 @@ void pop_Paciente_Heap_Emer(Heap<Paciente> &COLA_EMER, vector<Paciente> &EMERGEN
 
 void pop_Paciente_Heap_Quir(Heap<Paciente> &COLA_QUIR, vector<Paciente> &QUIROFANOS);
 
-// int numeroAleatorio(Paciente paciente);
-
-// void f_quir(vector<Paciente> &qui);
 
 
 // ********MAIN*********************************************************************************************************
@@ -190,10 +179,10 @@ int main(){
 			CONTADOR ++;
 		}
 
-		/*cout<<"Estos pacientes se les dio DE ALTA:"<<endl;
-		imprimir(DE_ALTA);*/
+		cerr <<"Estos pacientes se les dio DE ALTA:"<<endl;
+		imprimir(DE_ALTA);
 
-	cout<<"Estos pacientesque murieron"<<endl;
+	cerr <<"Estos pacientes murieron: "<<endl;
 	imprimir(DECESOS);
 
 }
@@ -256,8 +245,8 @@ void clasificar (Paciente &p1, vector<Paciente> &EMERGENCIAS, Heap <Paciente> &C
 
 
 void f_observacion(vector<Paciente> &OBSERVACION,vector<Paciente> &HOSPITALIZACION,queue <Paciente> &COLA_HOSP,
-		vector<Paciente> &DE_ALTA){// HAY UN PROBLEMA, TENEMOS QUE PREGUNTAR PRIMERO SI ES POSIBLE ENVIARLO
-	for(int i = 0; i<OBSERVACION.size(); i++){    // A OBSERVACIONES O A LA COLA DE OBSERVACIONES
+		vector<Paciente> &DE_ALTA){
+	for(int i = 0; i<OBSERVACION.size(); i++){
 			OBSERVACION[i].addTiempo(ESPACIO_OBSER);
 		int temp= OBSERVACION[i].getTiempo(ESPACIO_OBSER);
 		if( temp> 10){
@@ -267,22 +256,12 @@ void f_observacion(vector<Paciente> &OBSERVACION,vector<Paciente> &HOSPITALIZACI
 			if(interv <= 3){
 				HOSPITALIZACION.size()<CAP_MAX_HOSP ?
 						HOSPITALIZACION.push_back(OBSERVACION[i]) : COLA_HOSP.push(OBSERVACION[i]);
-
-				/*
-
-				if(HOSPITALIZACION.size() == CAP_MAX_HOSP){
-					COLA_HOSP.push(OBSERVACION[i]);
-				}else if(HOSPITALIZACION.size()<CAP_MAX_HOSP){ //creo que con esto se soluciona
-					HOSPITALIZACION.push_back(OBSERVACION[i]);
-				}
-				*/
-
 				OBSERVACION.erase(OBSERVACION.begin()+i);
 			}else if(3<interv && interv <=6){
 				DE_ALTA.push_back(OBSERVACION[i]);
 				OBSERVACION.erase(OBSERVACION.begin()+i);
 			}
-		}	//propongo agregar un atributo tiempo; para determinar cuanto tiempo se demoro un paciente es salir de la sala
+		}
 	}
 }
 
@@ -306,7 +285,7 @@ queue<Paciente> &COLA_OBSER){
 			}else if(3<interv && interv<=6){
 				if(OBSERVACION.size() == CAP_MAX_OBSER){
 					COLA_OBSER.push(EMERGENCIAS[i]);
-				}else if(OBSERVACION.size()<CAP_MAX_OBSER){//creo que con esto se soluciona
+				}else if(OBSERVACION.size()<CAP_MAX_OBSER){
 					OBSERVACION.push_back(EMERGENCIAS[i]);
 				}
 				EMERGENCIAS.erase(EMERGENCIAS.begin()+i);
@@ -319,7 +298,7 @@ queue<Paciente> &COLA_OBSER){
 
 void f_quirofano(vector<Paciente> &QUIROFANOS, vector<Paciente> &HOSPITALIZACION,queue<Paciente> &COLA_HOSP,
 		vector<Paciente> &DECESOS) {
-	//FALTA SUMAR TIEMPO
+
 	for(int i = 0; i<QUIROFANOS.size(); i++){
 		QUIROFANOS[i].addTiempo(ESPACIO_QUIRO);
 		int temp = QUIROFANOS[i].getTiempo(ESPACIO_QUIRO);
@@ -332,15 +311,22 @@ void f_quirofano(vector<Paciente> &QUIROFANOS, vector<Paciente> &HOSPITALIZACION
 
 		QUIROFANOS.erase(QUIROFANOS.begin()+ i);
 		}else if(3<interv && interv<=6){
-			DECESOS.push_back(QUIROFANOS[i]);
-			QUIROFANOS.erase(QUIROFANOS.begin()+ i);
+			int prob_quirofano = 1+rand()% (20 - 0);
+			if(prob_quirofano < 19){
+				HOSPITALIZACION.push_back(QUIROFANOS[i]);
+				QUIROFANOS.erase(QUIROFANOS.begin()+ i);
+			}
+			if(prob_quirofano == 20){
+				DECESOS.push_back(QUIROFANOS[i]);
+				QUIROFANOS.erase(QUIROFANOS.begin()+ i);
+			}
 		}
 	}
 }
 
 void f_hozpitalizacion(vector<Paciente> &HOSPITALIZACION,Heap<Paciente> &COLA_QUIR, vector<Paciente> &QUIROFANOS,
 		vector<Paciente> &DE_ALTA){
-	//FALTA SUMAR TIEMPO
+
 	for(int i = 0; i<HOSPITALIZACION.size(); i++){
 		HOSPITALIZACION[i].addTiempo(ESPACIO_HOSP);
 		int temp = HOSPITALIZACION[i].getTiempo(ESPACIO_HOSP);
@@ -351,10 +337,8 @@ void f_hozpitalizacion(vector<Paciente> &HOSPITALIZACION,Heap<Paciente> &COLA_QU
 					COLA_QUIR.insertar(HOSPITALIZACION[i]);
 				else if(QUIROFANOS.size() < CAP_MAX_QUIR )
 					QUIROFANOS.push_back(HOSPITALIZACION[i]);
-			HOSPITALIZACION.erase(HOSPITALIZACION.begin() +i);
-
-
-			}else if (interv > 5 && interv <= 8){
+					HOSPITALIZACION.erase(HOSPITALIZACION.begin() +i);
+			}else if (interv > 3 && interv <= 8){
 				DE_ALTA.push_back(HOSPITALIZACION[i]);
 				HOSPITALIZACION.erase(HOSPITALIZACION.begin() +i);
 			}
@@ -369,7 +353,7 @@ void f_consultorio(vector<Paciente> &CONSULTORIOS, vector<Paciente> &DE_ALTA){
 		CONSULTORIOS[i].addTiempo(ESPACIO_CONSUL);
 		CONSULTORIOS[i].addTiempo(ESPACIO_CONSUL);
 		int temp = CONSULTORIOS[i].getTiempo(ESPACIO_CONSUL);
-		if (temp < 5){
+		if (temp > 5){
 			DE_ALTA.push_back(CONSULTORIOS[i]);
 			CONSULTORIOS.erase(CONSULTORIOS.begin() +i);
 		}
@@ -420,11 +404,6 @@ void pop_Paciente_Heap_Quir(Heap<Paciente> &COLA_QUIR, vector<Paciente> &QUIROFA
 			break;
 	}
 }
-
-/**int numeroAleatorio(Paciente P1){
-	if(P1.getRango() <= 14){
-}
-*/
 
 void imprimir(Heap<Paciente> heap){
 	for(int i = 1; i<heap.getCuenta()+1; i++){

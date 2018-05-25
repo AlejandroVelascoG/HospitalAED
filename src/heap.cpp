@@ -75,9 +75,9 @@ DataType Heap<DataType>::eliminarMin(){
 			}else{
 			percolate_down (pos);
 			if(arreglo[2 * pos]< arreglo [2 * pos + 1]){
-				if(pos<cuenta/2+1) pos = 2 * pos;
+				if(pos<cuenta/*2+1 */) pos = 2 * pos;
 				}else{
-					if(pos<cuenta/2+1) pos = 2 * pos +1;
+					if(pos<cuenta/*2+1*/) pos = 2 * pos +1;
 					}
 				}break;
 			}

@@ -15,7 +15,7 @@ using namespace std;
 
 Paciente::Paciente() {
 
-	Documento = 1112000000+rand() %(1112999999 - 0);
+	Documento = 1112000000+rand() %(1112999999);
 	Edad = rand()% (91 - 0);
 	Triage =1+ rand()% (5 - 1);
 	Rango = setRango();
@@ -25,13 +25,6 @@ Paciente::Paciente() {
 	}
 
 }
-
-/*
-
-Paciente::~Paciente(){
-
-}
-*/
 
 int Paciente::getDocumento(){
 	return Documento;
