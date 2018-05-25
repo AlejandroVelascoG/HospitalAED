@@ -18,7 +18,7 @@ using namespace std;
 
 // CONSTANTE TIEMPO
 
-const int TIEMPO = 120;
+const int TIEMPO = 720;
 
 
 
@@ -179,11 +179,11 @@ int main(){
 			CONTADOR ++;
 		}
 
-		cerr <<"Estos pacientes se les dio DE ALTA:"<<endl;
-		imprimir(DE_ALTA);
+		/*cout <<"ESTOS PACIENTES FUERON DADOS DE ALTA: \n"<<endl;
+		imprimir(DE_ALTA); */
 
-	cerr <<"Estos pacientes murieron: "<<endl;
-	imprimir(DECESOS);
+		cout <<"ESTOS PACIENTES MURIERON: \n"<<endl;
+		imprimir(DECESOS);
 
 }
 
