@@ -18,7 +18,11 @@ Paciente::Paciente() {
 	Documento = 1112000000+rand() %(1112999999 - 0);
 	Edad = rand()% (91 - 0);
 	Triage =1+ rand()% (5 - 1);
-	Rango = this->setRango();
+	Rango = setRango();
+	Tiempo =new int [5];
+	for(int i = 0; i < 5; i++ ){
+		Tiempo[i] =0;
+	}
 
 }
 
@@ -47,7 +51,12 @@ void Paciente::setTriage(int tr){
 	Triage = tr;
 }
 
-int Paciente::getTiempo(int i){
+int Paciente::addTiempo(int i){
+	Tiempo[i]++;;
+	return Tiempo[i];
+}
+
+int Paciente::getTiempo(int i ){
 	return Tiempo[i];
 }
 
@@ -57,10 +66,10 @@ int Paciente::getRango(){
 
 
 int Paciente::setRango(){
-if (Edad <18) Rango = 1;
-if (Edad <35 && Edad >= 18) Rango = 4;
-if (Edad <60 && Edad >= 35) Rango = 3;
-if (Edad <=90 && Edad >=60) Rango = 2;
+if (Edad <18) Rango = 1 + Triage *10;
+if (Edad <35 && Edad >= 18) Rango = 4 + Triage *10;
+if (Edad <60 && Edad >= 35) Rango = 3 + Triage *10;
+if (Edad <=90 && Edad >=60) Rango = 2 + Triage *10;
 
 return Rango;
 }

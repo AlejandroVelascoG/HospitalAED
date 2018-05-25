@@ -18,7 +18,7 @@ private:
 	int Triage;
 	int Rango;
 	int setRango();
-	int Tiempo[5];
+	int *Tiempo ;
 
 public:
 
@@ -38,6 +38,8 @@ public:
 
 	int getRango();
 
+	int addTiempo(int i);
+
 	bool operator<(Paciente &paciente);
 
 	bool operator>(Paciente &paciente);
@@ -46,4 +48,3 @@ public:
 };
 
 #endif /* SRC_PACIENTE_H_ */
-
